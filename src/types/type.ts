@@ -171,3 +171,11 @@ export interface AuthRequest {
     username: string;
     password: string;
 }
+
+export interface AuthMe {
+    Authorization: string;
+}
+
+export interface Headers {
+    headers: AuthMe
+}

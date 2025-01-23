@@ -13,6 +13,8 @@ import { Link } from "react-router-dom"
 import { ChangeEventHandler, useState } from "react"
 import { useAppDispatch } from "../../store/hook"
 import { searchProducts } from "../../store/searchSlice"
+import { useQuery } from "@tanstack/react-query"
+import { getMe } from "../../services/service"
 
 
 export const Navbar = () => {
@@ -25,9 +27,13 @@ export const Navbar = () => {
     dispatch(searchProducts(text))
   }
 
-  const token = localStorage.getItem('refreshToken')
-  const username = localStorage.getItem('username')
+  const token = localStorage.getItem('accessToken')
 
+  const { data } = useQuery({
+    queryKey: ['auth'],
+    queryFn: () => getMe()
+  })
+  
 
   return (
     <>
@@ -51,8 +57,8 @@ export const Navbar = () => {
           
           <Link to={ token ? "/user" : "/login" }  className={classes.nav_link_item}>
             <Flex w={40} h={60} direction='column' align='center' justify='flex-end'>
-              <Image src={Login} w={26} h={26}/>
-              { token ? <span>{username}</span> : <span>Войти</span>}
+              { token ? <Image src={data?.image} w={26} h={26}/> : <Image src={Login} w={26} h={26}/> }
+              { token ? <span>{data?.username}</span> : <span>Войти</span>}
             </Flex>
           </Link>
 

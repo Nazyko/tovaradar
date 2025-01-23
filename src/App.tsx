@@ -9,9 +9,17 @@ import { NotFoundPage } from "./pages/NotFoundPage"
 import { SearchResultPage } from "./pages/SearchResultPage"
 import { Login } from "./auth/Login"
 import { PrivateRoute } from "./auth/PrivateRoute"
+import { useEffect } from "react"
+import { getMe } from "./services/service"
 
 
 export const App = () => {
+
+  useEffect(() => {
+    if(localStorage.getItem('accessToken')) {
+      getMe()
+    }
+  }, [])
 
   return (
     <>

@@ -12,15 +12,13 @@ export const Login = () => {
 
   const navigate = useNavigate()
 
-  const { mutate: login, isSuccess, data } = useMutation({
+  const { mutate: login, data, isError, isSuccess } = useMutation({
     mutationKey: ['auth'],
     mutationFn: loginUser
   })
 
   useEffect(() => {
     if (isSuccess && data) {
-      localStorage.setItem('id', JSON.stringify(data.id))
-      localStorage.setItem('username', data.username)
       localStorage.setItem('accessToken', data.accessToken)
       localStorage.setItem('refreshToken', data.refreshToken)
     }
@@ -36,18 +34,13 @@ export const Login = () => {
       setUsername("")
       setPassword("")
     }
-
-    if(isSuccess && data) {
-      localStorage.setItem('id', JSON.stringify(data.id))
-      localStorage.setItem('username', data.username)
-      localStorage.setItem('accessToken', data.accessToken)
-      localStorage.setItem('refreshToken', data.refreshToken)
+    
+    if (isSuccess) {
+      navigate("/")
     }
   }
 
-  if (isSuccess) {
-    navigate("/")
-  }
+  
 
   return (
     <Flex className="login">
@@ -67,6 +60,7 @@ export const Login = () => {
         />
         <button className="login_btn" type="submit">Вход</button>
       </form>
+      { isError && <h1 style={{color: 'red'}}>Неправилно вывод!</h1>  }
     </Flex>
   )
 }
