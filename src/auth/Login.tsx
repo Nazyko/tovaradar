@@ -34,12 +34,13 @@ export const Login = () => {
       setUsername("")
       setPassword("")
     }
-    
+  }
+
+  useEffect(()=>{
     if (isSuccess) {
       navigate("/")
     }
-  }
-
+  })
   
 
   return (

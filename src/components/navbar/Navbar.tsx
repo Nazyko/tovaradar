@@ -33,7 +33,6 @@ export const Navbar = () => {
     queryKey: ['auth'],
     queryFn: () => getMe()
   })
-  
 
   return (
     <>
