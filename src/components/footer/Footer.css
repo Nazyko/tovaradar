@@ -1,0 +1,32 @@
+.footer-wrapper {
+    background-color: #EEF1F2;
+}
+
+.footer {
+    padding: 80px 0 200px;
+}
+
+.footer-left span {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: right;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #B9B9B9;
+}
+
+.foote-text-box {
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    color: #818181;
+}
+
+.footer-text-box-title {
+    font-weight: 500;
+    color: #333232;
+}

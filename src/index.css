@@ -1,0 +1,36 @@
+body {
+    background-color: #FBFBFB;
+    font-family: "Roboto";
+    font-weight: 400;           
+    color: var(--blackColor);
+}
+
+:root {
+    --accentColor: #2CB708;
+    --blackColor: #333232;
+    --orangeColor: #EB8528;
+    --blueColor: #3E16DD;
+}
+
+* {
+    font-family: inherit;
+}
+
+.container-sm {
+    width: 1220px;
+    margin: 0 auto;
+}
+
+.container-lg {
+    width: 1320px;
+    margin: 0 auto;
+}
+
+a {
+    color: inherit;
+    font-family: inherit;
+}
+
+button {
+    cursor: pointer;
+}

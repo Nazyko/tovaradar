@@ -1,0 +1,27 @@
+.category-list {
+    margin: 80px 0 80px;
+    gap: 20px;
+}
+
+.category-list-item {
+    width: 290px;
+    height: 90px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 10px;
+    background-color: #FCFFFC;
+    box-shadow: 4px 2px 4px 0 rgb(0, 0, 0, 10%);
+
+    font-size: 20px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.category-list-item:hover {
+    color: var(--accentColor);
+    transform: scale(1.08);
+}

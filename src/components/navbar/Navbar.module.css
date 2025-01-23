@@ -1,0 +1,56 @@
+.catalogue_btn {
+    padding: 10px 18px;
+    color: #FFFFFF;
+    font-size: 18px;
+    font-weight: 400;
+    line-height: 21.09px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+    background-color: var(--accentColor);
+    border: none;
+    border-radius: 5px;
+}
+
+.search {
+    width: 419px;
+    height: 40px;
+    border: 1px solid var(--accentColor);
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    background-color: #FFFFFF;
+}
+
+.search_input {
+    padding: 10px 24px;
+    width: 387px;
+    height: 38px;
+    border: none;
+    outline: none;
+    border-radius: 10px;
+    background-color: #FFFFFF;
+}
+
+.search_input::placeholder {
+    color: #B9B9B9;
+}
+
+.search_icon {
+    width: 41px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 0 10px 10px 0;
+    background-color: var(--accentColor);
+}
+
+.nav_link_item:hover {
+    color: var(--accentColor);
+    transform: scale(1.08);
+}
+
+.nav_link_item:active {
+    color: var(--accentColor);
+}
