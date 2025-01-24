@@ -22,12 +22,12 @@ export const Navbar = () => {
 
   const dispatch = useAppDispatch();
 
+  const token = localStorage.getItem('accessToken')
+
   const handleSearch: ChangeEventHandler<HTMLInputElement> = (e) => {
     settext(e.target.value)
     dispatch(searchProducts(text))
   }
-
-  const token = localStorage.getItem('accessToken')
 
   const { data } = useQuery({
     queryKey: ['auth'],

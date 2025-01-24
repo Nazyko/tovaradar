@@ -3,7 +3,7 @@ import { Layout } from "./layout/Layout"
 import { HomePage } from "./pages/HomePage"
 import { Details } from "./pages/Details"
 import { CartPage } from "./pages/CartPage"
-import { User } from "./pages/User"
+import { UserPage } from "./pages/UserPage"
 import { Category } from "./pages/Category"
 import { NotFoundPage } from "./pages/NotFoundPage"
 import { SearchResultPage } from "./pages/SearchResultPage"
@@ -32,7 +32,7 @@ export const App = () => {
             <Route path="/search" element={<SearchResultPage/>}/>
             <Route element={<PrivateRoute/>}>
               <Route path="/cart" element={<CartPage/>}/>
-              <Route path="/user" element={<User/>} />
+              <Route path="/user/*" element={<UserPage/>} />
             </Route>
             <Route path="/login" element={<Login/>}/>
             <Route path="*" element={<NotFoundPage/>} />

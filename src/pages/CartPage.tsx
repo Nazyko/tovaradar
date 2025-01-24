@@ -1,9 +1,10 @@
+import { CartList } from "../components/cartlist/CartList"
 
 
 export const CartPage = () => {
   return (
     <div>
-      Cart Page
+      <CartList />
     </div>
   )
 }

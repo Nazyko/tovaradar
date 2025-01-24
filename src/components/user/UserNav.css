@@ -1,0 +1,28 @@
+.user-nav { 
+    width: 288px;
+    height: 182px;
+    padding: 20px 25px;
+    border: 1px solid #EAEAEA;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.active {
+    color: #2CB708;
+}
+
+.activeViolet {
+    color: #9458F5;
+}
+
+.user-nav button {
+    background-color: transparent;
+    margin: 0;
+    padding: 0;
+    border: none;
+}
