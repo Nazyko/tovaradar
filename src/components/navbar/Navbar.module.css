@@ -51,6 +51,6 @@
     transform: scale(1.08);
 }
 
-.nav_link_item:active {
+.active {
     color: var(--accentColor);
 }

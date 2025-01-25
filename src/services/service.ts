@@ -1,5 +1,5 @@
 import axios from "axios"
-import { AuthRequest, CategoryListResponse, GetProductsByCategoryResponse, GetProductsResponse, IUser, UsersProps } from "../types/type"
+import { AuthRequest, CategoryListResponse, GetProductsByCategoryResponse, GetProductsResponse, ICart, IUser, RefreshTokenResponse, UsersProps } from "../types/type"
 
 const URL = 'https://dummyjson.com/products?'
 
@@ -28,11 +28,32 @@ export const loginUser = async (credentials: AuthRequest) => {
 }
 
 export const getMe = async () => {
-    const accessToken = localStorage.getItem('accessToken')
-    const response = await axios.get<UsersProps>('https://dummyjson.com/auth/me', {
-        headers: {
-            'Authorization': `Bearer ${accessToken}`,
-        }
+    const accessToken = localStorage.getItem('accessToken');
+    if (!accessToken) throw new Error('Access token is missing');
+    const response = await axios.get<UsersProps>(
+        'https://dummyjson.com/auth/me',
+        {
+            headers: {
+                'Authorization': `Bearer ${accessToken}`,
+            },
+        }   
+    );
+    return response.data;
+};
+
+export const refreshToken = async () => {
+    const currentToken = localStorage.getItem('refreshToken')
+    if (!currentToken) throw new Error("No refresh token available")
+
+    const response = await axios.post<RefreshTokenResponse>('https://dummyjson.com/auth/refresh', {
+        refreshToken: currentToken
     })
+
     return response.data
 }
+
+export const getCartProducts = async (id: number) => {
+    const response = await axios.get<ICart>(`https://dummyjson.com/carts/user/${id}`)
+    return response.data
+}
+

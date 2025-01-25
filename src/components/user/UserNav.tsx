@@ -11,6 +11,11 @@ import { useState } from "react"
 export const UserNav = () => {
   const [isActive] = useState<boolean>(false)
 
+  const logout = () => {
+    localStorage.removeItem('accessToken')
+    localStorage.removeItem('refreshToken')
+  }
+  
   return (
     <Flex direction='column' gap={20} className="user-nav">  
 
@@ -35,7 +40,7 @@ export const UserNav = () => {
         </Flex>
       </NavLink>
 
-      <button>
+      <button onClick={logout}>
         <Flex gap={10} align='center'>
           <Image w={20} h={20} src={SignInIcon} /> 
           Выход

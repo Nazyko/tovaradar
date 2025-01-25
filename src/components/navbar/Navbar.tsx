@@ -9,7 +9,7 @@ import Basket from "../../assets/images/navbar/Basket.svg"
 
 import classes from "./Navbar.module.css"
 import '@mantine/core/styles.css';
-import { Link } from "react-router-dom"
+import { Link, NavLink } from "react-router-dom"
 import { ChangeEventHandler, useState } from "react"
 import { useAppDispatch } from "../../store/hook"
 import { searchProducts } from "../../store/searchSlice"
@@ -18,6 +18,7 @@ import { getMe } from "../../services/service"
 
 
 export const Navbar = () => {
+  const [ isActive ] = useState<boolean>(false)
   const [text, settext] = useState<string>("")
 
   const dispatch = useAppDispatch();
@@ -47,6 +48,7 @@ export const Navbar = () => {
               <span>Каталог</span>
             </Flex>
           </button>
+
           <Link to='/search' className={classes.search}>   
             <input value={text} onChange={handleSearch} type="text" className={classes.search_input} placeholder="Я ищу..."/>
             <div className={classes.search_icon}>
@@ -54,33 +56,33 @@ export const Navbar = () => {
             </div>
           </Link>
           
-          <Link to={ token ? "/user" : "/login" }  className={classes.nav_link_item}>
+          <NavLink to={ token ? "/user" : "/login" }  className={isActive ? 'active' : "nav_link_item"}>
             <Flex w={40} h={60} direction='column' align='center' justify='flex-end'>
               { token ? <Image src={data?.image} w={26} h={26}/> : <Image src={Login} w={26} h={26}/> }
               { token ? <span>{data?.username}</span> : <span>Войти</span>}
             </Flex>
-          </Link>
+          </NavLink>
 
-          <Link to='/' className={classes.nav_link_item}>
+          <NavLink to={token ? '/user/orders' : '/login'} className={isActive ? 'active' : "nav_link_item"}>
             <Flex w={50} h={60} direction='column' align='center' justify='flex-end'>
               <Image src={Shop} w={26} h={26}/>
               <span>Заказы</span>
             </Flex>
-          </Link>
+          </NavLink>
 
-          <Link to='/' className={classes.nav_link_item}>
+          <NavLink to={token ? '/user/likes' : "/login"} className={isActive ? 'active' : "nav_link_item"}>
             <Flex w={75} h={60} direction='column' align='center' justify='flex-end'>
               <Image src={Like} w={26} h={26}/>
               <span>Избранные</span>
             </Flex>
-          </Link>
+          </NavLink>
 
-          <Link to={ token ? "/cart" : "/login" } className={classes.nav_link_item}>
+          <NavLink to="/cart"  className={isActive ? 'active' : "nav_link_item"}>
             <Flex w={56} h={60} direction='column' align='center' justify='flex-end'>
               <Image src={Basket} w={26} h={26}/>
               <span>Корзина</span>
             </Flex>
-          </Link>    
+          </NavLink>    
         </Flex>
       </Flex> 
     </>

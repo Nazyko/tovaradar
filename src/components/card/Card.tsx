@@ -1,25 +1,28 @@
 import { Flex, Image } from "@mantine/core"
 import React from "react"
-import "./Cart.css"
+import "./Card.css"
 import { Link } from "react-router-dom";
 
-interface ICart {
+interface ICard {
     id:number;
     thumbnail: string;
     price: number;
     title: string;
 }
 
-export const Card: React.FC<ICart> = ({id, thumbnail, price, title }) => {
+export const Card: React.FC<ICard> = ({id, thumbnail, price, title }) => {
   return (
-    <Link to={`/details/${id}`}>
-        <Flex w={290} direction='column' className="card" gap={10}>
-            <Image w={289} src={thumbnail}/>
-            <h4 className="card-price">${price}</h4>
-            <span className="card-title">{title}</span>
-            <button className="card-btn">Купить</button>
-        </Flex>
-    </Link>
-    
+    <Flex w={290} direction='column' className="card" gap={10}>
+      <Link to={`/details/${id}`}>
+        <Image w={289} src={thumbnail}/>
+      </Link>
+      <Link to={`/details/${id}`}>
+        <h4 className="card-price">${price}</h4>
+      </Link>
+      <Link to={`/details/${id}`}>
+        <span className="card-title">{title}</span>
+      </Link>      
+      <button className="card-btn">Добавть в корзину</button>
+    </Flex>
   )
 }

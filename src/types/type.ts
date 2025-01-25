@@ -179,3 +179,8 @@ export interface AuthMe {
 export interface Headers {
     headers: AuthMe
 }
+
+export interface RefreshTokenResponse {
+    accessToken: string;
+    refreshToken: string;
+}

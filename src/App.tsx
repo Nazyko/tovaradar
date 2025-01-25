@@ -9,17 +9,15 @@ import { NotFoundPage } from "./pages/NotFoundPage"
 import { SearchResultPage } from "./pages/SearchResultPage"
 import { Login } from "./auth/Login"
 import { PrivateRoute } from "./auth/PrivateRoute"
-import { useEffect } from "react"
 import { getMe } from "./services/service"
 
 
 export const App = () => {
-
-  useEffect(() => {
-    if(localStorage.getItem('accessToken')) {
-      getMe()
-    }
-  }, [])
+  
+  if(localStorage.getItem('accessToken')) {
+    getMe()
+  }
+  
 
   return (
     <>
@@ -31,8 +29,8 @@ export const App = () => {
             <Route path="/category/:category" element={<Category/>}/>
             <Route path="/search" element={<SearchResultPage/>}/>
             <Route element={<PrivateRoute/>}>
-              <Route path="/cart" element={<CartPage/>}/>
               <Route path="/user/*" element={<UserPage/>} />
+              <Route path="/cart" element={<CartPage/>}/>
             </Route>
             <Route path="/login" element={<Login/>}/>
             <Route path="*" element={<NotFoundPage/>} />
