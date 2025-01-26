@@ -27,6 +27,18 @@ export const loginUser = async (credentials: AuthRequest) => {
     return response.data
 }
 
+export const refreshToken = async () => {
+    const currentToken = localStorage.getItem('refreshToken')
+    if (!currentToken) throw new Error("No refresh token available")
+
+    const response = await axios.post<RefreshTokenResponse>('https://dummyjson.com/auth/refresh', {
+        refreshToken: `${currentToken}`,
+        expiresInMins: 30,
+    })
+
+    return response.data
+}
+
 export const getMe = async () => {
     const accessToken = localStorage.getItem('accessToken');
     if (!accessToken) throw new Error('Access token is missing');
@@ -40,17 +52,6 @@ export const getMe = async () => {
     );
     return response.data;
 };
-
-export const refreshToken = async () => {
-    const currentToken = localStorage.getItem('refreshToken')
-    if (!currentToken) throw new Error("No refresh token available")
-
-    const response = await axios.post<RefreshTokenResponse>('https://dummyjson.com/auth/refresh', {
-        refreshToken: currentToken
-    })
-
-    return response.data
-}
 
 export const getCartProducts = async (id: number) => {
     const response = await axios.get<ICart>(`https://dummyjson.com/carts/user/${id}`)

@@ -9,10 +9,15 @@ import { NotFoundPage } from "./pages/NotFoundPage"
 import { SearchResultPage } from "./pages/SearchResultPage"
 import { Login } from "./auth/Login"
 import { PrivateRoute } from "./auth/PrivateRoute"
-import { getMe } from "./services/service"
+import { getMe, refreshToken } from "./services/service"
+import { useEffect } from "react"
 
 
 export const App = () => {
+
+  useEffect(()=>{
+    refreshToken()
+  }, [])
   
   if(localStorage.getItem('accessToken')) {
     getMe()
