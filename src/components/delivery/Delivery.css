@@ -1,0 +1,96 @@
+.delivery {
+    margin-top: 40px;
+    margin-bottom: 71px;
+    width: 910px;
+}
+
+.delivery-inner {
+    padding: 40px 18px 20px;
+    border: 1px solid #EAEAEA;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.delivery-title {
+    font-size: 24px;
+    font-weight: 500;
+    line-height: 28.13px;
+    text-align: left;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}
+
+.delivery_border-box {
+    padding: 10px 10px 11px;
+    border: 1px solid #EAEAEA;
+    border-radius: 10px;
+}
+
+.delivery-comment {
+    height: 142px;
+    border: 1px solid #EAEAEA;
+    border-radius: 10px;
+    outline: none;
+    resize: none;
+    padding: 10px;
+}
+
+.recipient {
+    margin-top: 40px;
+    width: 476px;
+}
+
+.payment {
+    margin-top: 40px;
+}
+
+input[type="radio"] {
+    appearance: none;
+    width: 22px;
+    height: 22px;
+    border: 1px solid #B9B9B9; /* Внешний зеленый круг */
+    border-radius: 50%;
+    position: relative;
+    cursor: pointer;
+    background: transparent;
+}
+
+input[type="radio"]:checked {
+    border: 1px solid var(--accentColor);
+}
+  
+input[type="radio"]:checked::before {
+    content: "";
+    width: 10px; /* Внутренний круг */
+    height: 10px;
+    background-color: var(--accentColor);
+    border-radius: 50%;
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    
+}
+  
+.payment label {
+    cursor: pointer;
+}
+
+.checkout {
+    border: none;
+    outline: none;
+    background-color: #EFEFEF;
+    padding: 17px 0;
+    border-radius: 10px;
+    font-size: 16px;
+    font-weight: 400;
+    line-height: 18.75px;
+    text-align: center;
+    text-underline-position: from-font;
+    text-decoration-skip-ink: none;
+}

@@ -62,7 +62,7 @@ type Hair = {
     type: string;
 }
 
-type Address = {
+export type Address = {
     address: string;
     city: string;
     state: string;
@@ -128,16 +128,6 @@ export interface UsersProps {
     userAgent: string;
     crypto: CryptoProps;
     role: string;
-}
-
-export interface ICart {
-    id: number;
-    products: ProductData[];
-    total: number;
-    discountedTotal: number;
-    userId: number;
-    totalProducts: number;
-    totalQuantity: number;
 }
 
 export interface CategoryListResponse {

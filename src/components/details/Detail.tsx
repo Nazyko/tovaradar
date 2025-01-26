@@ -90,7 +90,7 @@ export const Detail: React.FC<IDetail> = ({
                     <span className='price'>$ {price}</span>
                     <span style={{color: 'red'}}>- {discountPercentage}%</span>
                 </Flex>
-                <button className="details-card-btn">Купить</button>
+                <button className="details-card-btn">Добавить в корзину</button>
             </Flex>
         </Flex>
     </Flex>

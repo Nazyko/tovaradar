@@ -1,5 +1,5 @@
 import axios from "axios"
-import { AuthRequest, CategoryListResponse, GetProductsByCategoryResponse, GetProductsResponse, ICart, IUser, RefreshTokenResponse, UsersProps } from "../types/type"
+import { AuthRequest, CategoryListResponse, GetProductsByCategoryResponse, GetProductsResponse, IUser, RefreshTokenResponse, UsersProps } from "../types/type"
 
 const URL = 'https://dummyjson.com/products?'
 
@@ -52,9 +52,4 @@ export const getMe = async () => {
     );
     return response.data;
 };
-
-export const getCartProducts = async (id: number) => {
-    const response = await axios.get<ICart>(`https://dummyjson.com/carts/user/${id}`)
-    return response.data
-}
 

@@ -22,7 +22,7 @@ export const Card: React.FC<ICard> = ({id, thumbnail, price, title }) => {
       <Link to={`/details/${id}`}>
         <span className="card-title">{title}</span>
       </Link>      
-      <button className="card-btn">Добавть в корзину</button>
+      <button className="card-btn">Добавить в корзину</button>
     </Flex>
   )
 }

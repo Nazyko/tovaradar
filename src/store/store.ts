@@ -1,8 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit"
 import searchReducer from "./searchSlice"
+import cartReducer from "./cartSlice"
+
 
 const rootReducer = combineReducers({
-    search: searchReducer,  
+    search: searchReducer,
+    cart: cartReducer,  
 })
 
 
