@@ -1,4 +1,4 @@
-import { Flex, Loader } from '@mantine/core'
+import { Flex } from '@mantine/core'
 import React, { useEffect } from 'react'
 import { CartItem } from './CartItem'
 import { useAppDispatch } from '../../store/hook';
@@ -18,17 +18,14 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
         dispatch(getCartProducts(id))
     }, [dispatch, id])
 
-    const { carts, error, loading } = useAppSelector(state => state.cart)
+    const { carts, error } = useAppSelector(state => state.cart)
     
     const products = carts.flatMap((product) => product.products)
     const total = carts.flatMap((product) => product.total)
     const discountedTotal = carts.flatMap((product) => product.discountedTotal)
     
     const totalProducts = carts.flatMap((product) => product.totalProducts)
-
-
-
-    if(loading) return <Loader color='lime'/>
+    
     if(error) return <h1 style={{textAlign: 'center'}}>Server Error</h1>
     
     return (

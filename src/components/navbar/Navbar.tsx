@@ -34,20 +34,21 @@ export const Navbar = () => {
 
   return (
     <>
-      <Flex className="container-sm" align='center' justify='center' mb={20}>
+      <Flex className="container-sm" align='center' justify='center'>
         <Flex w={1220} h={125} align='center' justify="space-between">
+
           <Link to='/'>
             <Image src={Logo} alt="Logo image"/>
           </Link>
+          
+          <Link to='/search' className={classes.search}>   
+            <input value={text} onChange={handleSearch} type="text" className={classes.search_input} placeholder="Я ищу..."/>
+            <div className={classes.search_icon}>
+              <Image src={Search} alt="Search Icon"/>
+            </div>
+          </Link>
 
-          <Flex align='center' gap={30}>
-            <Link to='/search' className={classes.search}>   
-              <input value={text} onChange={handleSearch} type="text" className={classes.search_input} placeholder="Я ищу..."/>
-              <div className={classes.search_icon}>
-                <Image src={Search} alt="Search Icon"/>
-              </div>
-            </Link>
-            
+          <Flex align='center' gap={40}>
             <Link to={ token ? "/user" : "/login" } className={classes.nav_link_item}>
               <Flex w={40} h={60} direction='column' align='center' justify='flex-end' >
                 { token ? <Image src={data?.image} w={26} h={26}/> : <Image src={Login} w={26} h={26}/> }
@@ -75,6 +76,7 @@ export const Navbar = () => {
                 <span>Корзина</span>
               </Flex>
             </Link>
+
           </Flex>  
 
         </Flex>

@@ -15,14 +15,22 @@ import { useEffect } from "react"
 
 export const App = () => {
 
-  useEffect(()=>{
-    refreshToken()
-  }, [])
-  
-  if(localStorage.getItem('accessToken')) {
-    getMe()
-  }
-  
+  useEffect(() => {
+    const initAuth = async () => {
+      try {
+        const data = await refreshToken();
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        await getMe();
+      } catch (error) {
+        console.error("Authentication failed", error);
+        localStorage.removeItem("accessToken");
+        localStorage.removeItem("refreshToken");
+      }
+    };
+
+    initAuth();
+  }, []);
 
   return (
     <>
@@ -36,7 +44,7 @@ export const App = () => {
             <Route element={<PrivateRoute/>}>
               <Route path="/user/*" element={<UserPage/>} />
               <Route path="/cart" element={<CartPage/>}/>
-            </Route>
+            </Route>    
             <Route path="/login" element={<Login/>}/>
             <Route path="*" element={<NotFoundPage/>} />
           </Route>

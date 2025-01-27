@@ -13,10 +13,10 @@
 }
 
 .search {
-    width: 419px;
+    width: 550px;
     height: 40px;
     border: 1px solid var(--accentColor);
-    border-radius: 10px;
+    border-radius: 12px;
     display: flex;
     align-items: center;
     background-color: #FFFFFF;
@@ -24,11 +24,11 @@
 
 .search_input {
     padding: 10px 24px;
-    width: 387px;
+    width: 590px;
     height: 38px;
     border: none;
     outline: none;
-    border-radius: 10px;
+    border-radius: 12px;
     background-color: #FFFFFF;
 }
 
@@ -37,12 +37,12 @@
 }
 
 .search_icon {
-    width: 41px;
+    width: 65px;
     height: 40px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-radius: 0 10px 10px 0;
+    border-radius: 0 12px 12px 0;
     background-color: var(--accentColor);
 }
 

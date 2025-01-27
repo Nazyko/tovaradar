@@ -1,4 +1,4 @@
-import { Flex, Loader } from "@mantine/core"
+import { Center, Flex, Loader } from "@mantine/core"
 import { useQuery } from "@tanstack/react-query"
 import { getCategories } from "../../services/service"
 import { Link } from "react-router-dom"
@@ -12,7 +12,7 @@ export const CategoryList = () => {
         queryFn: () => getCategories()
     })
 
-    if(isLoading) return <Loader color="lime" />
+    if(isLoading) return <Center h={300}><Loader color="lime" /></Center> 
     if(isError) return <h1>Server Error</h1>
     return (
         <Flex className="container-sm">

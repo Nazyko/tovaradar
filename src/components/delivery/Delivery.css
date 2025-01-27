@@ -94,3 +94,8 @@ input[type="radio"]:checked::before {
     text-underline-position: from-font;
     text-decoration-skip-ink: none;
 }
+
+.checkout:hover {
+    background-color: var(--accentColor);
+    color: #FFFFFF;
+}
