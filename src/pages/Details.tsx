@@ -3,7 +3,7 @@ import { useParams } from "react-router-dom"
 import { ProductData } from "../types/type";
 import { useQuery } from "@tanstack/react-query";
 import { getProducts } from "../services/service";
-import { Flex, Loader } from "@mantine/core";
+import { Center, Flex, Loader } from "@mantine/core";
 import { Detail } from "../components/details/Detail";
 
 
@@ -26,7 +26,7 @@ export const Details = () => {
     }
   }, [id, data])
 
-  if(isLoading) return <Loader color="lime"/>
+  if(isLoading) return <Center h={500}><Loader color="lime"/></Center>
   if(isError) return <h1>Server Error</h1>  
 
   return (

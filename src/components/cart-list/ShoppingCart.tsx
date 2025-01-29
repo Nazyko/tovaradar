@@ -12,21 +12,22 @@ interface ShoppingCartProps {
 }
 
 export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
+    const { carts, error, products } = useAppSelector(state => state.cart)
+
     const dispatch = useAppDispatch()
 
     useEffect(() => {
         dispatch(getCartProducts(id))
     }, [dispatch, id])
 
-    const { carts, error } = useAppSelector(state => state.cart)
     
-    const products = carts.flatMap((product) => product.products)
-    const total = carts.flatMap((product) => product.total)
-    const discountedTotal = carts.flatMap((product) => product.discountedTotal)
+    const total = carts.reduce((acc, product) => acc + product.total, 0)
+    const discountedTotal = carts.reduce((acc, product) => acc + product.discountedTotal, 0)
+    const totalProducts = carts.reduce((acc, product) => acc + product.totalProducts, 0)
     
-    const totalProducts = carts.flatMap((product) => product.totalProducts)
-    
-    if(error) return <h1 style={{textAlign: 'center'}}>Server Error</h1>
+    if(error) {
+        console.log(error);
+    }
     
     return (
         <Flex className='container-sm'>
@@ -38,6 +39,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
                             products.map(product => (
                                 <CartItem 
                                     key={product.id}
+                                    id={product.id}
                                     image={product.thumbnail}
                                     title={product.title}
                                     price={product.price}
