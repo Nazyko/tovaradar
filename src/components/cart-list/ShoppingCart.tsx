@@ -12,7 +12,7 @@ interface ShoppingCartProps {
 }
 
 export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
-    const { carts, error, products } = useAppSelector(state => state.cart)
+    const { carts, error, products } = useAppSelector(state => state.cart)    
 
     const dispatch = useAppDispatch()
 
@@ -20,10 +20,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
         dispatch(getCartProducts(id))
     }, [dispatch, id])
 
-    
-    const total = carts.map(cart => cart.total)
-    const discountedTotal = carts.map(cart => cart.discountedTotal)
-    const totalProducts = carts.map(cart => cart.totalProducts)
+    const cartId = Object.values(carts ?? {}).map(cart => cart.id);
+    const total = Object.values(carts ?? {}).map(cart => cart.total);
+    const discountedTotal = Object.values(carts ?? {}).map(cart => cart.discountedTotal);
+    const totalProducts = Object.values(carts ?? {}).map(cart => cart.totalProducts);
     
     if(error) {
         console.log(error);
@@ -39,6 +39,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
                             products.map(product => (
                                 <CartItem 
                                     key={product.id}
+                                    cartId={Number(cartId)}
                                     id={product.id}
                                     image={product.thumbnail}
                                     title={product.title}
@@ -62,7 +63,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
                                 <span className='text-bold-lg'>Итого:</span>
                                 <span className='text-bold-sm'>$ {discountedTotal}</span>
                             </Flex>
-                        </Flex>
+                        </Flex>     
                     </Flex>
                 </Flex>
                 

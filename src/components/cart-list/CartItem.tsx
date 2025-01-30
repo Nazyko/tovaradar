@@ -9,6 +9,7 @@ import { deleteCartProduct, deleteCartProducts, updateCartProducts } from '../..
 
 
 interface CartItemProps {
+  cartId: number;
   id: number;
   image: string;
   title: string;
@@ -19,16 +20,16 @@ interface CartItemProps {
   discountedTotal: number
 }
 
-export const CartItem: React.FC<CartItemProps> = ({ id, image, title, price, quantity}) => {
+export const CartItem: React.FC<CartItemProps> = ({ cartId, id, image, title, price, quantity}) => {
   const cartItems = JSON.parse(localStorage.getItem("cart-products") || "[]")
   const dispatch = useAppDispatch()
 
   const increment = () => {
-    dispatch(updateCartProducts({ id, products: cartItems }))
+    dispatch(updateCartProducts({ cartId, products: cartItems }))
   }
   
   const decrement = () => {
-    dispatch(updateCartProducts({ id, products: cartItems }))
+    dispatch(updateCartProducts({ cartId, products: cartItems }))
   }
 
   const handledelete = (id: number) => {

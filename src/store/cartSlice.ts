@@ -56,14 +56,14 @@ export const addCartProducts = createAsyncThunk(
 
 export const updateCartProducts = createAsyncThunk<
     CartProductsResponse,  
-    { id: number, products: Product[] },
+    { cartId: number, products: Product[] },
     { rejectValue: string } 
 >(
     "cart/updateCartProducts",
-    async ({ id, products }, thunkAPI) => {
+    async ({ cartId, products }, thunkAPI) => {
         try {
             const response = await axios.put<CartProductsResponse>(
-                `https://dummyjson.com/carts/${id}`,
+                `https://dummyjson.com/carts/${cartId}`,
                 {
                     merge: true,
                     products: products,
@@ -81,9 +81,9 @@ export const updateCartProducts = createAsyncThunk<
 
 export const deleteCartProducts = createAsyncThunk(
     'cart/deleteCartProducts', 
-    async (id: number, thunkAPI) => {
+    async (cartId: number, thunkAPI) => {
         try {
-            const response = await axios.delete(`https://dummyjson.com/carts/${id}`)
+            const response = await axios.delete(`https://dummyjson.com/carts/${cartId}`)
             return response.data                    
         }
         catch(error) {
