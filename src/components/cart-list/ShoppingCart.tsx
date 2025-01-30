@@ -21,9 +21,9 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
     }, [dispatch, id])
 
     
-    const total = carts.reduce((acc, product) => acc + product.total, 0)
-    const discountedTotal = carts.reduce((acc, product) => acc + product.discountedTotal, 0)
-    const totalProducts = carts.reduce((acc, product) => acc + product.totalProducts, 0)
+    const total = carts.map(cart => cart.total)
+    const discountedTotal = carts.map(cart => cart.discountedTotal)
+    const totalProducts = carts.map(cart => cart.totalProducts)
     
     if(error) {
         console.log(error);
@@ -42,7 +42,11 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
                                     id={product.id}
                                     image={product.thumbnail}
                                     title={product.title}
+                                    quantity={product.quantity}
                                     price={product.price}
+                                    discountPercentage={product.discountPercentage}
+                                    total={product.total}
+                                    discountedTotal={product.discountedTotal}
                                 />
                             ))
                         }

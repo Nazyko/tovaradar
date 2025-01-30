@@ -1,32 +1,25 @@
 import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { ProductData } from "../types/type";
+import { CartProducts, CartProductsRequest, CartProductsResponse, ICart, Product } from "../types/Cart";
 
-interface ICart {
-    id: number;
-    products: ProductData[];
-    total: number;
-    discountedTotal: number;
-    userId: number;
-    totalProducts: number;
-    totalQuantity: number;
-}
-
-interface CartProductsResponse {
+type CartState = {
     carts: ICart[];
-    total: number;
-    skip: number;
-    limit: number;
+    products: CartProducts[];
+    total: number | null;
+    skip: number | null;
+    limit: number | null;
+    loading: boolean;
+    error: string | null;
 }
 
-export interface Product {
-    id: number;
-    quantity: number;
-}
-
-interface CartProductsRequest {
-    id: number;
-    products: Product[];
+const initialState: CartState = {
+    carts: [],
+    products: [],
+    total: null,
+    skip: null,
+    limit: null,
+    loading: false,
+    error: null,
 }
 
 export const getCartProducts = createAsyncThunk(
@@ -63,14 +56,14 @@ export const addCartProducts = createAsyncThunk(
 
 export const updateCartProducts = createAsyncThunk<
     CartProductsResponse,  
-    { userId: number, products: Product[] },     
+    { id: number, products: Product[] },
     { rejectValue: string } 
 >(
     "cart/updateCartProducts",
-    async ({ userId, products }, thunkAPI) => {
+    async ({ id, products }, thunkAPI) => {
         try {
             const response = await axios.put<CartProductsResponse>(
-                `https://dummyjson.com/carts/${userId}`,
+                `https://dummyjson.com/carts/${id}`,
                 {
                     merge: true,
                     products: products,
@@ -102,26 +95,6 @@ export const deleteCartProducts = createAsyncThunk(
     }
 )
 
-type CartState = {
-    carts: ICart[];
-    products: ProductData[];
-    total: number | null;
-    skip: number | null;
-    limit: number | null;
-    loading: boolean;
-    error: string | null;
-}
-
-const initialState: CartState = {
-    carts: [],
-    products: [],
-    total: null,
-    skip: null,
-    limit: null,
-    loading: false,
-    error: null,
-}
-
 const cartSlice = createSlice({
     name: 'cart', 
     initialState,
@@ -136,7 +109,7 @@ const cartSlice = createSlice({
     },
     extraReducers: (builder) => {
         builder
-            .addCase(getCartProducts.pending,  (state) => {
+            .addCase(getCartProducts.pending, (state) => {
                 state.loading = true;
             })
 
@@ -164,7 +137,6 @@ const cartSlice = createSlice({
                 state.loading = false;
                 state.error = null;
                 state.carts = action.payload.carts; 
-                state.products = action.payload.carts.flatMap(cart => cart.products);
             })
 
             .addCase(deleteCartProducts.fulfilled, (state, action) => {

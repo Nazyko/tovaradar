@@ -5,8 +5,9 @@ import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../store/hook";
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../../services/service";
-import { addCartProducts, Product } from "../../store/cartSlice";
+import { addCartProducts } from "../../store/cartSlice";
 import { useProductsCart } from "../../context/ProductCartContext";
+import { Product } from "../../types/Cart";
 
 interface ICard {
   id:number;

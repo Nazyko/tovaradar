@@ -6,39 +6,29 @@ import Plus from "../../assets/images/cart/plus.svg"
 import "./CartItem.css"
 import { useAppDispatch } from '../../store/hook';
 import { deleteCartProduct, deleteCartProducts, updateCartProducts } from '../../store/cartSlice';
-import { useProductsCart } from '../../context/ProductCartContext';
-import { getMe } from '../../services/service';
-import { useQuery } from '@tanstack/react-query';
+
 
 interface CartItemProps {
   id: number;
   image: string;
   title: string;
+  quantity: number;
   price: number;
+  discountPercentage: number;
+  total: number;
+  discountedTotal: number
 }
 
-export const CartItem: React.FC<CartItemProps> = ({ id, image, title, price }) => {
-  const { getItemQuantity, increaseCartQuantity, decreaseCartQuantity } = useProductsCart()
+export const CartItem: React.FC<CartItemProps> = ({ id, image, title, price, quantity}) => {
   const cartItems = JSON.parse(localStorage.getItem("cart-products") || "[]")
   const dispatch = useAppDispatch()
 
-  const quantity = getItemQuantity(id)
-
-  const { data } = useQuery({
-    queryKey: ['auth'],
-    queryFn: getMe
-  })
-
-  const userId = data?.id ? data.id : 0
-
   const increment = () => {
-    increaseCartQuantity(id)
-    dispatch(updateCartProducts({ userId, products: cartItems }))
+    dispatch(updateCartProducts({ id, products: cartItems }))
   }
   
   const decrement = () => {
-    decreaseCartQuantity(id)
-    dispatch(updateCartProducts({ userId, products: cartItems }))
+    dispatch(updateCartProducts({ id, products: cartItems }))
   }
 
   const handledelete = (id: number) => {
