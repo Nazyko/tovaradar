@@ -3,6 +3,7 @@ import React, { useEffect, useState } from "react"
 import "./Login.css"
 import { useMutation } from "@tanstack/react-query"
 import { loginUser } from "../services/service"
+import { useAuth } from "../hooks/useAuth"
 import { useNavigate } from "react-router-dom"
 
 
@@ -11,10 +12,19 @@ export const Login = () => {
   const [password, setPassword] = useState<string>("")
 
   const navigate = useNavigate()
+  const { refetch } = useAuth()
 
   const { mutate: login, data, isError, isSuccess } = useMutation({
     mutationKey: ['auth'],
-    mutationFn: loginUser
+    mutationFn: loginUser,
+    onSuccess: (data) => {
+      if (data) {
+        localStorage.setItem("accessToken", data.accessToken);
+        localStorage.setItem("refreshToken", data.refreshToken);
+        refetch(); 
+        navigate("/");
+      }
+    },
   })
 
   useEffect(() => {
@@ -35,12 +45,6 @@ export const Login = () => {
       setPassword("")
     }
   }
-
-  useEffect(()=>{
-    if (isSuccess) {
-      navigate("/")
-    }
-  })
   
 
   return (

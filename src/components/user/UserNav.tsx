@@ -1,19 +1,24 @@
 import { Flex, Image } from "@mantine/core"
-import { NavLink } from "react-router-dom"
+import { NavLink, useNavigate } from "react-router-dom"
 import UserIcon from "../../assets/images/user/user.svg"
 import ListIcon from "../../assets/images/user/list.svg"
 import LikeIcon from "../../assets/images/user/like_icon.svg"
 import SignInIcon from "../../assets/images/user/sign_in_icon.svg"
 import "./UserNav.css"
 import { useState } from "react"
+import { useAuth } from "../../hooks/useAuth"
 
 
 export const UserNav = () => {
   const [isActive] = useState<boolean>(false)
+  const { logout, refetch } = useAuth()
 
-  const logout = () => {
-    localStorage.removeItem('accessToken')
-    localStorage.removeItem('refreshToken')
+  const navigate = useNavigate()
+
+  const handleLogout = () => {
+    logout()
+    refetch()
+    navigate("/")
   }
   
   return (
@@ -40,7 +45,7 @@ export const UserNav = () => {
         </Flex>
       </NavLink>
 
-      <button onClick={logout}>
+      <button onClick={handleLogout}>
         <Flex gap={10} align='center'>
           <Image w={20} h={20} src={SignInIcon} /> 
           Выход

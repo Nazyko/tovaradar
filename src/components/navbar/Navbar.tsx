@@ -8,14 +8,14 @@ import Basket from "../../assets/images/navbar/Basket.svg"
 import classes from "./Navbar.module.css"
 import '@mantine/core/styles.css';
 import { Link } from "react-router-dom"
-import { ChangeEventHandler, useState } from "react"
+import { ChangeEventHandler, useEffect, useState } from "react"
 import { useAppDispatch } from "../../store/hook"
 import { searchProducts } from "../../store/searchSlice"
-import { useQuery } from "@tanstack/react-query"
-import { getMe } from "../../services/service"
+import { useAuth } from "../../hooks/useAuth"
 
 
 export const Navbar = () => {
+  const { isAuth, image, username, refetch } = useAuth()
   const [text, settext] = useState<string>("")
 
   const dispatch = useAppDispatch();
@@ -27,10 +27,11 @@ export const Navbar = () => {
     dispatch(searchProducts(text))
   }
 
-  const { data } = useQuery({
-    queryKey: ['auth'],
-    queryFn: () => getMe()
-  })
+  useEffect(() => {
+    if (isAuth) {
+      refetch()
+    }
+  }, [isAuth, refetch]);
 
   return (
     <>
@@ -51,8 +52,8 @@ export const Navbar = () => {
           <Flex align='center' gap={40}>
             <Link to={ token ? "/user" : "/login" } className={classes.nav_link_item}>
               <Flex w={40} h={60} direction='column' align='center' justify='flex-end' >
-                { token ? <Image src={data?.image} w={26} h={26}/> : <Image src={Login} w={26} h={26}/> }
-                { token ? <span>{data?.username}</span> : <span>Войти</span>}
+                { isAuth ? <Image src={image} w={26} h={26}/> : <Image src={Login} w={26} h={26}/> }
+                { isAuth ? <span>{username}</span> : <span>Войти</span>}
               </Flex>
             </Link>
 
