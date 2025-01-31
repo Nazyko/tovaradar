@@ -20,21 +20,21 @@ interface CartItemProps {
   discountedTotal: number
 }
 
-export const CartItem: React.FC<CartItemProps> = ({ cartId, id, image, title, price, quantity}) => {
+export const CartItem: React.FC<CartItemProps> = ({ cartId, image, title, price, quantity}) => {
   const cartItems = JSON.parse(localStorage.getItem("cart-products") || "[]")
   const dispatch = useAppDispatch()
 
-  const increment = () => {
+  const increment = (cartId: number) => {
     dispatch(updateCartProducts({ cartId, products: cartItems }))
   }
   
-  const decrement = () => {
+  const decrement = (cartId: number) => {
     dispatch(updateCartProducts({ cartId, products: cartItems }))
   }
 
-  const handledelete = (id: number) => {
-    dispatch(deleteCartProducts(id))
-    dispatch(deleteCartProduct(id))
+  const handledelete = (cartId: number) => {
+    dispatch(deleteCartProducts(cartId))
+    dispatch(deleteCartProduct(cartId))
   }
 
   return (
@@ -45,16 +45,16 @@ export const CartItem: React.FC<CartItemProps> = ({ cartId, id, image, title, pr
         <span>код товара: 67998909</span>
       </Flex> 
       <Flex className='counter'>
-        <button className='counter-btn' onClick={decrement}>
+        <button className='counter-btn' onClick={ () => decrement(cartId)}>
           <img src={Minus} alt=''/>
         </button>
         <span className='counter-value'>{quantity}</span>
-        <button className='counter-btn' onClick={increment}>
+        <button className='counter-btn' onClick={ () => increment(cartId)}>
           <img src={Plus} alt="" />
         </button>
       </Flex>
       <p className='text-bold'>$ {price}</p>
-      <button className='del-btn' onClick={() => handledelete(id)}><img src={Delete} alt="" /></button>
+      <button className='del-btn' onClick={() => handledelete(cartId)}><img src={Delete} alt="" /></button>
     </Flex>
   )
 }   

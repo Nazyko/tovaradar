@@ -4,12 +4,17 @@ import { useState, useEffect } from 'react';
 
 export function useAuth() {
     const [isAuth, setAuth] = useState<boolean>(false);
+    const [hasToken, setHasToken] = useState<boolean>(!!localStorage.getItem('accessToken'));
     const queryClient = useQueryClient();
+
+    useEffect(() => {
+        setHasToken(!!localStorage.getItem('accessToken'));
+    }, []);
 
     const { data, isSuccess, refetch } = useQuery({
         queryKey: ['auth'],
         queryFn: getMe,
-        enabled: false,
+        enabled: hasToken
     });
 
     useEffect(() => {
