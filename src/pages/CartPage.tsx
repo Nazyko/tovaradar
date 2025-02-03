@@ -18,7 +18,7 @@ export const CartPage = () => {
 
   return (
     <div>
-      <ShoppingCart id={data.id}/>
+      <ShoppingCart userId={data.id}/>
       <Delivery 
         address={data.address} 
         firstName={data.firstName}

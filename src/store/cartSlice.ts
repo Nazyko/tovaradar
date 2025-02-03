@@ -1,10 +1,9 @@
 import { AnyAction, createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import axios, { AxiosError } from "axios";
-import { CartProducts, CartProductsRequest, CartProductsResponse, ICart, Product } from "../types/Cart";
+import { CartProductsResponse, ICart, Product } from "../types/Cart";
 
 type CartState = {
     carts: ICart[];
-    products: CartProducts[];
     total: number | null;
     skip: number | null;
     limit: number | null;
@@ -14,7 +13,6 @@ type CartState = {
 
 const initialState: CartState = {
     carts: [],
-    products: [],
     total: null,
     skip: null,
     limit: null,
@@ -38,46 +36,54 @@ export const getCartProducts = createAsyncThunk(
     }
 )
 
-export const addCartProducts = createAsyncThunk(
+export const addCartProducts = createAsyncThunk<
+    ICart, 
+    { userId: number, products: Product[] },
+    { rejectValue: string }
+>(
     'cart/addCartProducts', 
-    async (credentials: CartProductsRequest, thunkAPI) => {
+    async ({userId, products}, {rejectWithValue}) => {
         try {
-            const response = await axios.post<CartProductsResponse>(`https://dummyjson.com/carts/add`, credentials)
+            const response = await axios.post<ICart>(`https://dummyjson.com/carts/add`, {
+                userId: userId,
+                products: products
+            })
+                        
             return response.data                    
         }
         catch (error) {
             if (axios.isAxiosError(error) && error.response) {
-                return thunkAPI.rejectWithValue(error.response.data.message || 'Invalid credentials');
+                return rejectWithValue(error.response.data.message || 'Invalid credentials');
             }
-            return thunkAPI.rejectWithValue('Network Error');
+            return rejectWithValue('Network Error');
         }
     }
 )
 
 export const updateCartProducts = createAsyncThunk<
-    CartProductsResponse,  
+    ICart,      
     { cartId: number, products: Product[] },
     { rejectValue: string } 
 >(
     "cart/updateCartProducts",
-    async ({ cartId, products }, thunkAPI) => {
+    async ({ cartId, products }, { rejectWithValue }) => {
+    
         try {
-            const response = await axios.put<CartProductsResponse>(
-                `https://dummyjson.com/carts/${cartId}`,
-                {
-                    merge: true,
-                    products: products,
-                }
-            );
+            const response = await axios.put<ICart>(`https://dummyjson.com/carts/${cartId}`, {
+                merge: true,
+                products: products,
+            });
+            
             return response.data;
+
         } catch (error) {
             const axiosError = error as AxiosError<{ message: string }>;
-            return thunkAPI.rejectWithValue(
+            return rejectWithValue(
                 axiosError.response?.data?.message || "Failed to update cart"
             );
         }
     }
-);
+)
 
 export const deleteCartProducts = createAsyncThunk(
     'cart/deleteCartProducts', 
@@ -111,12 +117,12 @@ const cartSlice = createSlice({
         builder
             .addCase(getCartProducts.pending, (state) => {
                 state.loading = true;
+                state.error = null
             })
 
             .addCase(getCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.carts = action.payload.carts
-                state.products = action.payload.carts.flatMap(cart => cart.products)
+                state.carts = action.payload.carts ?? [];
             })
 
             .addCase(addCartProducts.pending, (state) => {
@@ -125,26 +131,38 @@ const cartSlice = createSlice({
             })
 
             .addCase(addCartProducts.fulfilled, (state, action) => {
-                const newCarts = action.payload.carts; 
-                if (Array.isArray(newCarts)) {
-                    state.carts = [...state.carts, ...newCarts]; 
-                }
-                state.loading = false;  
+                state.loading = false;
                 state.error = null;
+            
+                const cart = action.payload;                
+            
+                const newCart: ICart = {
+                    id: cart.id,
+                    userId: cart.userId,
+                    products: cart.products,
+                    total: cart.total,
+                    discountedTotal: cart.discountedTotal ?? 0, 
+                    totalProducts: cart.totalProducts,
+                    totalQuantity: cart.products.reduce((sum, product) => sum + product.quantity, 0),
+                };
+            
+                state.carts.push(newCart);
             })
 
             .addCase(updateCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                state.carts = action.payload.carts; 
+            
+                const updatedCart = action.payload;
+                const cartIndex = state.carts.findIndex(cart => cart.id === updatedCart.id);
+            
+                if (cartIndex !== -1) {
+                    state.carts[cartIndex] = updatedCart;
+                }
             })
 
             .addCase(deleteCartProducts.fulfilled, (state, action) => {
-                const deletedProductId = action.payload; 
-                state.carts = state.carts.map(cart => ({
-                     ...cart,
-                    products: cart.products.filter(product => product.id !== deletedProductId),
-                }));
+                state.carts = state.carts.filter(cart => cart.id !== action.payload);
                 state.loading = false;
             })
 

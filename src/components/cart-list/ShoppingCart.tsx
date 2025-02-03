@@ -1,45 +1,60 @@
 import { Flex } from '@mantine/core'
 import React, { useEffect } from 'react'
 import { CartItem } from './CartItem'
-import { useAppDispatch } from '../../store/hook';
-import { useAppSelector } from '../../store/hook';
-import { getCartProducts } from '../../store/cartSlice';
+import { useAppDispatch, useAppSelector } from '../../store/hook';
+import { deleteCartProducts, getCartProducts, updateCartProducts } from '../../store/cartSlice';
 import "./ShoppingCart.css"
 
-
 interface ShoppingCartProps {
-    id: number;
+    userId: number;
 }
 
-export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
-    const { carts, error, products } = useAppSelector(state => state.cart)    
+export const ShoppingCart: React.FC<ShoppingCartProps> = ({ userId }) => {
+    const dispatch = useAppDispatch();
+    const { carts, error } = useAppSelector(state => state.cart);
 
-    const dispatch = useAppDispatch()
+    const cart = carts.length > 0 ? carts[0] : null;
+    const cartId = cart ? cart.id : null;
+    const total = cart ? cart.total : 0;
+    const discountedTotal = cart ? cart.discountedTotal : 0;
+    const totalProducts = cart ? cart.totalProducts : 0;
+    const products = cart ? cart.products : [];
 
-    useEffect(() => {
-        dispatch(getCartProducts(id))
-    }, [dispatch, id])
+    useEffect(() => {   
+        if (userId) {
+            dispatch(getCartProducts(userId));
+        }
+    }, [dispatch, userId]);
 
-    const cartId = Object.values(carts ?? {}).map(cart => cart.id);
-    const total = Object.values(carts ?? {}).map(cart => cart.total);
-    const discountedTotal = Object.values(carts ?? {}).map(cart => cart.discountedTotal);
-    const totalProducts = Object.values(carts ?? {}).map(cart => cart.totalProducts);
-    
-    if(error) {
+    const increment = (id: number, quantity: number) => {
+        if (!cartId) return;
+        dispatch(updateCartProducts({ cartId, products: [{ id, quantity: quantity + 1 }] }));
+    };
+
+    const decrement = (id: number, quantity: number) => {
+        if (!cartId || quantity <= 1) return;
+        dispatch(updateCartProducts({ cartId, products: [{ id, quantity: quantity - 1 }] }));
+    };
+
+    const handledelete = () => {
+        if (!cartId) return;
+        dispatch(deleteCartProducts(cartId));
+    };
+
+    if (error) {
         console.log(error);
     }
-    
+
     return (
         <Flex className='container-sm'>
             <Flex className='cart' direction='column' mt={40}>
                 <h1 className="cart__title">Оформление товара</h1>
                 <Flex mt={40} gap={21}>
                     <Flex w={910} className='cart__items' direction='column' gap={20}>
-                        {
+                        {products.length > 0 ? (
                             products.map(product => (
                                 <CartItem 
                                     key={product.id}
-                                    cartId={Number(cartId)}
                                     id={product.id}
                                     image={product.thumbnail}
                                     title={product.title}
@@ -48,9 +63,14 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
                                     discountPercentage={product.discountPercentage}
                                     total={product.total}
                                     discountedTotal={product.discountedTotal}
+                                    increment={increment}
+                                    decrement={decrement}
+                                    handledelete={handledelete}
                                 />
                             ))
-                        }
+                        ) : (
+                            <p>Корзина пуста</p>
+                        )}
                     </Flex>
                     <Flex className='cart-total' direction='column' gap={12}>
                         <h3 className="cart-total__title">Ваш заказ</h3>
@@ -66,9 +86,7 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ id }) => {
                         </Flex>     
                     </Flex>
                 </Flex>
-                
             </Flex>
         </Flex>
     )
 }
-
