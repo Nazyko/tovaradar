@@ -1,4 +1,4 @@
-import { Flex, Loader } from "@mantine/core"
+import { Center, Flex, Loader } from "@mantine/core"
 import { Slider } from "../components/slider/Slider"
 import { useQuery } from "@tanstack/react-query"
 import { getProductsByCategory } from "../services/service"
@@ -15,7 +15,7 @@ export const Category = () => {
     queryFn: () => getProductsByCategory(category)
   })
 
-  if(isLoading) return <Loader color="lime"/>
+  if(isLoading) return <Center h={500}><Loader color="lime"/></Center>
   if(isError) return <h1>Server Error</h1>
 
   return (

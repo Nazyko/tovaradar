@@ -5,7 +5,7 @@ import { Link } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../store/hook";
 import { useQuery } from "@tanstack/react-query";
 import { getMe } from "../../services/service";
-import { addCartProducts, getCartProducts, updateCartProducts } from "../../store/cartSlice";
+import { addCartProducts, updateCartProducts } from "../../store/cartSlice";
 
 interface ICard {
   id:number;
@@ -18,6 +18,7 @@ export const Card: React.FC<ICard> = ({id, thumbnail, price, title }) => {
   const { carts } = useAppSelector(state => state.cart);
   const cart = carts.length > 0 ? carts[0] : null;
   const cartId = cart && cart.id
+  
   const dispatch = useAppDispatch()
 
   const { data } = useQuery({
@@ -28,13 +29,18 @@ export const Card: React.FC<ICard> = ({id, thumbnail, price, title }) => {
   const userId = data?.id
 
   const addCartItem = (id: number) => {
-    if (userId) {
-      dispatch(addCartProducts({ userId, products: [{ id: id, quantity: 1 }] }));
-    if (!cartId) return;
-    dispatch(updateCartProducts({ cartId, products: [{ id: id, quantity: 1 }] }))
-    dispatch(getCartProducts(userId))
+    if (!userId) {
+      console.log('User ID not found');
+      return;
+    }
+    dispatch(addCartProducts({ userId, products: [{ id: id, quantity: 1 }] }));
+
+    if (cartId) {
+      dispatch(updateCartProducts({ cartId, products: [{ id: id, quantity: 1 }] }));
+    }  
   };
-}
+  
+  
 
   return (
     <Flex w={290} direction='column' className="card" gap={10}>

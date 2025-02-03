@@ -133,25 +133,34 @@ const cartSlice = createSlice({
             .addCase(addCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
+                console.log("adding products");
+                
             
-                const cart = action.payload;                
+                const cart = action.payload;
             
-                const newCart: ICart = {
-                    id: cart.id,
-                    userId: cart.userId,
-                    products: cart.products,
-                    total: cart.total,
-                    discountedTotal: cart.discountedTotal ?? 0, 
-                    totalProducts: cart.totalProducts,
-                    totalQuantity: cart.products.reduce((sum, product) => sum + product.quantity, 0),
-                };
-            
-                state.carts.push(newCart);
+                
+                const existingCartIndex = state.carts.findIndex((cart) => cart.id === action.payload.id);
+                if (existingCartIndex !== -1) {
+                    state.carts[existingCartIndex] = cart;
+                } else {
+                    const newCart: ICart = {
+                        id: cart.id,
+                        userId: cart.userId,
+                        products: cart.products,
+                        total: cart.total,
+                        discountedTotal: cart.discountedTotal ?? 0, 
+                        totalProducts: cart.totalProducts,
+                        totalQuantity: cart.products.reduce((sum, product) => sum + product.quantity, 0),
+                    };
+                    state.carts.push(newCart);
+                }
             })
 
             .addCase(updateCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
+                console.log("update cart");
+                
             
                 const updatedCart = action.payload;
                 const cartIndex = state.carts.findIndex(cart => cart.id === updatedCart.id);
