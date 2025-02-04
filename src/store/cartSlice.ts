@@ -105,7 +105,7 @@ const cartSlice = createSlice({
     name: 'cart', 
     initialState,
     reducers: {
-        deleteCartProduct: (state, action: PayloadAction<number>) => {
+        deleteCartItem: (state, action: PayloadAction<number>) => {
             const productId = action.payload;
             state.carts = state.carts.map(cart => ({
                 ...cart,
@@ -173,11 +173,15 @@ const cartSlice = createSlice({
             .addCase(deleteCartProducts.fulfilled, (state, action) => {
                 state.carts = state.carts.filter(cart => cart.id !== action.payload);
                 state.loading = false;
+                console.log("delete");
+                
             })
 
             .addCase(deleteCartProducts.rejected, (state, action) => {
                 state.error = action.payload as string; 
                 state.loading = false;
+                console.log(action.payload);
+                
             })
 
             .addMatcher(isError, (state, action: PayloadAction<string>) => {
@@ -191,6 +195,6 @@ function isError(action: AnyAction): boolean {
     return action.type.endsWith('rejected');
 }
 
-export const { deleteCartProduct } = cartSlice.actions
+export const { deleteCartItem } = cartSlice.actions
 
 export default cartSlice.reducer;

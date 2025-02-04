@@ -2,7 +2,7 @@ import { Flex } from '@mantine/core'
 import React, { useEffect } from 'react'
 import { CartItem } from './CartItem'
 import { useAppDispatch, useAppSelector } from '../../store/hook';
-import { deleteCartProducts, getCartProducts, updateCartProducts } from '../../store/cartSlice';
+import { deleteCartItem, deleteCartProducts, getCartProducts, updateCartProducts } from '../../store/cartSlice';
 import "./ShoppingCart.css"
 
 interface ShoppingCartProps {
@@ -36,9 +36,10 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ userId }) => {
         dispatch(updateCartProducts({ cartId, products: [{ id, quantity: quantity - 1 }] }));
     };
 
-    const handledelete = () => {
+    const handledelete = (id: number) => {
         if (!cartId) return;
         dispatch(deleteCartProducts(cartId));
+        dispatch(deleteCartItem(id))
     };
 
     if (error) {
