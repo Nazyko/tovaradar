@@ -11,9 +11,19 @@ import { Login } from "./auth/Login"
 import { PrivateRoute } from "./auth/PrivateRoute"
 import { getMe, refreshToken } from "./services/service"
 import { useEffect } from "react"
+import { useAuth } from "./hooks/useAuth"
+import { useAppDispatch } from "./store/hook"
+import { getCartProducts } from "./store/cartSlice"
 
 
 export const App = () => {
+  const { userId } = useAuth()
+  const dispatch = useAppDispatch()
+
+  useEffect(() => {
+    if(!userId) return;
+    dispatch(getCartProducts(userId))
+  }, [dispatch, userId])
 
   useEffect(() => {
     const initAuth = async () => {

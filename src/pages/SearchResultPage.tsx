@@ -11,7 +11,7 @@ export const SearchResultPage = () => {
 
   return (
     <Flex className="container-sm">
-      <Flex wrap='wrap' gap={20}>
+      <Flex wrap='wrap' gap={20} mt={40} mb={80}>
         {
           products ? 
             products.map((card) => (

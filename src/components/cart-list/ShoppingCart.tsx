@@ -78,11 +78,11 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ userId }) => {
                         <Flex direction='column' gap={30}>
                             <Flex align='center' justify='space-between'>
                                 <span>Товары ({totalProducts})</span>
-                                <span className='text-bold-sm'>$ {total}</span>
+                                <span className='text-bold-sm'>$ {total.toFixed(2)}</span>
                             </Flex>
                             <Flex align='center' justify='space-between'>
                                 <span className='text-bold-lg'>Итого:</span>
-                                <span className='text-bold-sm'>$ {discountedTotal}</span>
+                                <span className='text-bold-sm'>$ {discountedTotal.toFixed(2)}</span>
                             </Flex>
                         </Flex>     
                     </Flex>

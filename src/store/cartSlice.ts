@@ -122,6 +122,7 @@ const cartSlice = createSlice({
 
             .addCase(getCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
+                state.error = null
                 state.carts = action.payload.carts;
             })
 
@@ -135,23 +136,19 @@ const cartSlice = createSlice({
                 state.error = null;
                 const cart = action.payload;
             
-                const userId = state.carts.findIndex((cart) => cart.userId === action.payload.userId);
-                if (userId) {
-                    const newCart: ICart = {
-                        id: cart.id,
-                        userId: cart.userId,
-                        products: cart.products,
-                        total: cart.total,
-                        discountedTotal: cart.discountedTotal ?? 0, 
-                        totalProducts: cart.totalProducts,
-                        totalQuantity: cart.products.reduce((sum, product) => sum + product.quantity, 0),
-                    };
-                    state.carts.push(newCart);
+                const userIndex = state.carts.findIndex((cart) => cart.userId === action.payload.userId);
+                if (userIndex === -1) {
+                    state.carts.push(cart);
                 }
-                console.log(action.payload);
+                console.log(action.payload);               
                 
                 alert("Добавлено")
             })
+
+            .addCase(updateCartProducts.pending, (state) => {
+                state.loading = true;
+                state.error = null;
+            })            
 
             .addCase(updateCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
@@ -164,16 +161,16 @@ const cartSlice = createSlice({
             })
 
             .addCase(deleteCartProducts.fulfilled, (state, action) => {
-                state.carts = state.carts.filter(cart => cart.id !== action.payload);
+                const cartId = action.meta.arg;
+                state.carts = state.carts.filter(cart => cart.id !== cartId);
                 state.loading = false;
-                console.log("delete");
+                state.error = null
             })
 
             .addCase(deleteCartProducts.rejected, (state, action) => {
                 state.error = action.payload as string; 
                 state.loading = false;
                 console.log(action.payload);
-                
             })
 
             .addMatcher(isError, (state, action: PayloadAction<string>) => {

@@ -34,6 +34,7 @@ export function useAuth() {
 
     return {
         isAuth,
+        userId: data?.id,
         image: data?.image,
         username: data?.username,
         data: data,
