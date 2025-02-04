@@ -34,7 +34,6 @@ export const Card: React.FC<ICard> = ({id, thumbnail, price, title }) => {
       return;
     }
     dispatch(addCartProducts({ userId, products: [{ id: id, quantity: 1 }] }));
-    alert("Добавлено")
 
     if (cartId) {
       dispatch(updateCartProducts({ cartId, products: [{ id: id, quantity: 1 }] }));

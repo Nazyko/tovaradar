@@ -122,7 +122,7 @@ const cartSlice = createSlice({
 
             .addCase(getCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
-                state.carts = action.payload.carts ?? [];
+                state.carts = action.payload.carts;
             })
 
             .addCase(addCartProducts.pending, (state) => {
@@ -133,16 +133,10 @@ const cartSlice = createSlice({
             .addCase(addCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                console.log("adding products");
-                
-            
                 const cart = action.payload;
             
-                
-                const existingCartIndex = state.carts.findIndex((cart) => cart.id === action.payload.id);
-                if (existingCartIndex !== -1) {
-                    state.carts[existingCartIndex] = cart;
-                } else {
+                const userId = state.carts.findIndex((cart) => cart.userId === action.payload.userId);
+                if (userId) {
                     const newCart: ICart = {
                         id: cart.id,
                         userId: cart.userId,
@@ -154,17 +148,16 @@ const cartSlice = createSlice({
                     };
                     state.carts.push(newCart);
                 }
+                console.log(action.payload);
+                
+                alert("Добавлено")
             })
 
             .addCase(updateCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                console.log("update cart");
-                
-            
                 const updatedCart = action.payload;
                 const cartIndex = state.carts.findIndex(cart => cart.id === updatedCart.id);
-            
                 if (cartIndex !== -1) {
                     state.carts[cartIndex] = updatedCart;
                 }
@@ -174,7 +167,6 @@ const cartSlice = createSlice({
                 state.carts = state.carts.filter(cart => cart.id !== action.payload);
                 state.loading = false;
                 console.log("delete");
-                
             })
 
             .addCase(deleteCartProducts.rejected, (state, action) => {
