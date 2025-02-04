@@ -36,6 +36,7 @@ export function useAuth() {
         isAuth,
         image: data?.image,
         username: data?.username,
+        data: data,
         logout,
         refetch,
     };

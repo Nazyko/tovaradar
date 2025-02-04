@@ -1,18 +1,19 @@
 import { Checkbox, Flex } from '@mantine/core'
-import { useQuery } from '@tanstack/react-query'
-import { getMe } from '../../services/service'
+
 import "./Info.css"
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { BirthDatePicker } from './BirthDatePicker'
 import { Link } from 'react-router-dom'
+import { useAuth } from '../../hooks/useAuth'
 
 export const Info = () => {
+  const { isAuth, data, refetch } = useAuth()
 
-  const { data } = useQuery({
-    queryKey: ['authMe'],
-    queryFn: () => getMe(),
-  })
-  
+  useEffect(() => {
+    if(isAuth) {
+      refetch()
+    }
+  }, [isAuth, refetch])
 
   const [firstName, setFirstName] = useState<string>(`${data?.firstName}`)
   const [lastName, setLastName] = useState<string>(`${data?.lastName}`)
