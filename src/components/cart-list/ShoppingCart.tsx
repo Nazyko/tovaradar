@@ -4,6 +4,7 @@ import { CartItem } from './CartItem'
 import { useAppDispatch, useAppSelector } from '../../store/hook';
 import { deleteCartItem, deleteCartProducts, getCartProducts, updateCartProducts } from '../../store/cartSlice';
 import "./ShoppingCart.css"
+import { CartProducts } from '../../types/Cart';
 
 interface ShoppingCartProps {
     userId: number;
@@ -17,8 +18,8 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ userId }) => {
     const cartId = cart ? cart.id : null;
     const total = cart ? cart.total : 0;
     const discountedTotal = cart ? cart.discountedTotal : 0;
-    const totalProducts = cart ? cart.totalProducts : 0;
-    const products = cart ? cart.products : [];
+    const totalProducts = cart ? cart.totalProducts : 0;    
+    const cartProducts: CartProducts[] = carts.flatMap(cart => cart.products)
 
     useEffect(() => {   
         if (userId) {
@@ -52,8 +53,8 @@ export const ShoppingCart: React.FC<ShoppingCartProps> = ({ userId }) => {
                 <h1 className="cart__title">Оформление товара</h1>
                 <Flex mt={40} gap={21}>
                     <Flex w={910} className='cart__items' direction='column' gap={20}>
-                        {products.length > 0 ? (
-                            products.map(product => (
+                        {cartProducts.length > 0 ? (
+                            cartProducts.map(product => (
                                 <CartItem 
                                     key={product.id}
                                     id={product.id}

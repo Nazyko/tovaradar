@@ -106,11 +106,20 @@ const cartSlice = createSlice({
     initialState,
     reducers: {
         deleteCartItem: (state, action: PayloadAction<number>) => {
-            const productId = action.payload;
-            state.carts = state.carts.map(cart => ({
-                ...cart,
-                products: cart.products.filter(product => product.id !== productId)
-            }));
+            state.carts = state.carts.map(cart => {
+                const updatedProducts = cart.products.filter(product => product.id !== action.payload);
+                const newTotal = updatedProducts.reduce((sum, p) => sum + p.total, 0);
+                const newDiscountedTotal = updatedProducts.reduce((sum, p) => sum + p.discountedTotal, 0);
+                const newTotalProducts = (updatedProducts.length + 1) - 1
+        
+                return { 
+                    ...cart, 
+                    products: updatedProducts, 
+                    total: newTotal, 
+                    discountedTotal: newDiscountedTotal, 
+                    totalProducts: newTotalProducts 
+                };
+            });
         }
     },
     extraReducers: (builder) => {
@@ -134,15 +143,15 @@ const cartSlice = createSlice({
             .addCase(addCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-                const cart = action.payload;
             
-                const userIndex = state.carts.findIndex((cart) => cart.userId === action.payload.userId);
-                if (userIndex === -1) {
-                    state.carts.push(cart);
-                }
-                console.log(action.payload);               
-                
-                alert("Добавлено")
+                console.log("Товар успешно добавлен в корзину:", action.payload);
+
+                const userId = state.carts.map(cart => cart.userId === action.payload.userId);
+            
+                if (userId) {
+                    state.carts.push(action.payload)                    
+                } 
+                console.log("Текущее состояние корзины ПОСЛЕ обновления:", JSON.parse(JSON.stringify(state.carts)));
             })
 
             .addCase(updateCartProducts.pending, (state) => {
@@ -161,7 +170,7 @@ const cartSlice = createSlice({
             })
 
             .addCase(deleteCartProducts.fulfilled, (state, action) => {
-                const cartId = action.meta.arg;
+                const cartId = action.payload;
                 state.carts = state.carts.filter(cart => cart.id !== cartId);
                 state.loading = false;
                 state.error = null
