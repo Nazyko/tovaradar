@@ -4,6 +4,9 @@ import Brand from "../../assets/images/details/brand.svg"
 import Shape from "../../assets/images/details/shape-icon.svg"
 import "./Detail.css"
 import { Dimensions, Meta } from '../../types/type';
+import { addCartProducts } from '../../store/cartSlice';
+import { useAuth } from '../../hooks/useAuth';
+import { useAppDispatch } from '../../store/hook';
 
 
 interface IDetail {
@@ -34,6 +37,17 @@ export const Detail: React.FC<IDetail> = ({
     meta,
     dimensions
 }) => {
+    const { userId } = useAuth()
+    const dispatch = useAppDispatch()
+    
+    const addCartItem = (id: number) => {
+        if (!userId) {
+            alert('Вы не овторизован. Авторизуйтесь!');
+            return;
+        } else {
+            dispatch(addCartProducts({ userId, products: [{ id: id, quantity: 1 }] }));
+        }
+    };
 
 
   return (
@@ -90,7 +104,7 @@ export const Detail: React.FC<IDetail> = ({
                     <span className='price'>$ {price}</span>
                     <span style={{color: 'red'}}>- {discountPercentage}%</span>
                 </Flex>
-                <button className="details-card-btn">Добавить в корзину</button>
+                <button className="details-card-btn" onClick={() => addCartItem(id)}>Добавить в корзину</button>
             </Flex>
         </Flex>
     </Flex>

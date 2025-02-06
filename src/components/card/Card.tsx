@@ -3,9 +3,8 @@ import React from "react"
 import "./Card.css"
 import { Link } from "react-router-dom";
 import { useAppDispatch } from "../../store/hook";
-import { useQuery } from "@tanstack/react-query";
-import { getMe } from "../../services/service";
 import { addCartProducts } from "../../store/cartSlice";
+import { useAuth } from "../../hooks/useAuth";
 
 interface ICard {
   id:number;
@@ -15,22 +14,16 @@ interface ICard {
 }
 
 export const Card: React.FC<ICard> = ({id, thumbnail, price, title }) => {
-  
+  const { userId } = useAuth()
   const dispatch = useAppDispatch()
-
-  const { data } = useQuery({
-    queryKey: ['auth'],
-    queryFn: getMe
-  })
-
-  const userId = data?.id
 
   const addCartItem = (id: number) => {
     if (!userId) {
       alert('Вы не овторизован. Авторизуйтесь!');
       return;
+    } else {
+      dispatch(addCartProducts({ userId, products: [{ id: id, quantity: 1 }] }));
     }
-    dispatch(addCartProducts({ userId, products: [{ id: id, quantity: 1 }] }));
   };
   
 

@@ -9,6 +9,7 @@ type CartState = {
     limit: number | null;
     loading: boolean;
     error: string | null;
+    toaster: boolean;
 }
 
 const initialState: CartState = {
@@ -18,6 +19,7 @@ const initialState: CartState = {
     limit: null,
     loading: false,
     error: null,
+    toaster: false,
 }
 
 export const getCartProducts = createAsyncThunk(
@@ -109,8 +111,8 @@ const cartSlice = createSlice({
             state.carts = state.carts.map(cart => {
                 const updatedProducts = cart.products.filter(product => product.id !== action.payload);
                 const newTotal = updatedProducts.reduce((sum, p) => sum + p.total, 0);
-                const newDiscountedTotal = updatedProducts.reduce((sum, p) => sum + p.discountedTotal, 0);
-                const newTotalProducts = (updatedProducts.length + 1) - 1
+                const newDiscountedTotal = updatedProducts.reduce((sum, p) => sum + (p.discountedTotal ?? 0), 0);
+                const newTotalProducts = updatedProducts.length 
         
                 return { 
                     ...cart, 
@@ -143,15 +145,11 @@ const cartSlice = createSlice({
             .addCase(addCartProducts.fulfilled, (state, action) => {
                 state.loading = false;
                 state.error = null;
-            
-                console.log("Товар успешно добавлен в корзину:", action.payload);
-
                 const userId = state.carts.map(cart => cart.userId === action.payload.userId);
-            
                 if (userId) {
                     state.carts.push(action.payload)                    
-                } 
-                console.log("Текущее состояние корзины ПОСЛЕ обновления:", JSON.parse(JSON.stringify(state.carts)));
+                }
+                alert("Товар добавлено!")
             })
 
             .addCase(updateCartProducts.pending, (state) => {
